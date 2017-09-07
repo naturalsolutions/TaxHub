@@ -50,7 +50,7 @@ class BibAttributs(serializableModel, db.Model):
     theme = db.relationship("BibThemes", lazy='select')
 
     def __repr__(self):
-        return '<BibAttributs %r>'% self.nom_attribut
+        return '{} : {}'.format(self.theme.nom_theme, self.nom_attribut)
 
 class BibThemes(serializableModel, db.Model):
     __tablename__ = 'bib_themes'
@@ -63,7 +63,7 @@ class BibThemes(serializableModel, db.Model):
     attributs = db.relationship("BibAttributs", lazy='select')
 
     def __repr__(self):
-        return '<BibThemes %r>'% self.nom_theme
+        return self.nom_theme
 
 class Taxref(serializableModel, db.Model):
     __tablename__ = 'taxref'
@@ -94,7 +94,9 @@ class Taxref(serializableModel, db.Model):
     def __repr__(self):
         return '<Taxref %r>'% self.nom_complet
 
-
+    def getRegne():
+        regnes = db.session.query(Taxref.regne).distinct(Taxref.regne).all()
+        return regnes
 
 class CorNomListe(serializableModel, db.Model):
     __tablename__ = 'cor_nom_liste'

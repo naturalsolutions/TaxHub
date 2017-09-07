@@ -27,6 +27,7 @@
         <li ng-class="{active:ctrl.route=='taxref'}"><a href="#!/taxref">Taxref</a></li>
         <li ng-class="{active:ctrl.route=='taxons'}"><a href="#!/taxons">Taxons</a></li>
         <li ng-class="{active:ctrl.route=='listes'}"><a href="#!/listes">Listes</a></li>
+        <li ng-if="ctrl.userRights.high"><a href="/admin">Admin</a></li>
       </ul>
       <login-form-directive />
     </div>

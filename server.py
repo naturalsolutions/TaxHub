@@ -42,6 +42,9 @@ def init_app():
     from apptax.taxonomie.routesbibtypesmedia import adresses
     app.register_blueprint(adresses, url_prefix='/api/bibtypesmedia')
 
+    from apptax.admin.admin import setup_admin
+    setup_admin(app)
+
     return app
 app = init_app()
 CORS(app)
