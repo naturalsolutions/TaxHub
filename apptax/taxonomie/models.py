@@ -64,6 +64,8 @@ class BibThemes(serializableModel, db.Model):
 
     def __repr__(self):
         return self.nom_theme
+    def __unicode__(self):
+            return self.nom_theme
 
 class Taxref(serializableModel, db.Model):
     __tablename__ = 'taxref'
@@ -94,9 +96,16 @@ class Taxref(serializableModel, db.Model):
     def __repr__(self):
         return '<Taxref %r>'% self.nom_complet
 
-    def getRegne():
-        regnes = db.session.query(Taxref.regne).distinct(Taxref.regne).all()
-        return regnes
+
+class VRegneGroupinpn(serializableModel, db.Model):
+    __tablename__ = 'v_regne_groupinpn'
+    __table_args__ = {'schema':'taxonomie'}
+    regne = db.Column(db.Unicode, primary_key=True)
+    group1_inpn = db.Column(db.Unicode, primary_key=True)
+    group2_inpn = db.Column(db.Unicode, primary_key=True)
+
+    def __repr__(self):
+        return '<VRegneGroupinpn %r>'% self.regne
 
 class CorNomListe(serializableModel, db.Model):
     __tablename__ = 'cor_nom_liste'
