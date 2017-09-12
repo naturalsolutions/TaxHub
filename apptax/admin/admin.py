@@ -1,6 +1,6 @@
 
 from flask_admin import Admin, AdminIndexView
-from flask import current_app, Blueprint
+from flask import current_app, Blueprint, url_for
 
 from pypnusershub.routes import check_auth
 
@@ -43,8 +43,8 @@ class AuthenticatedModelView(ModelView):
 
     @check_auth(
         3,
-        redirect_on_expiration="/",
-        redirect_on_invalid_token="/"
+        redirect_on_expiration="/taxhub/",
+        redirect_on_invalid_token="/taxhub/"
     )
     def _handle_view(self, name, **kwargs):
         return super()._handle_view(name, **kwargs)
@@ -54,32 +54,16 @@ class NoActionsModelView(AuthenticatedModelView):
     can_edit = False
     can_delete = False
 
-from flask_admin.base import expose
-class MyHomeView(AdminIndexView):
-    @expose('/')
-    def index(self):
-        return self.render('admin/admin.html')
-
-    def get_url(self, *args, **kwargs):
-        print('get_url')
-        url = super(CustomAdminIndexView, self).get_url(self, *args,**kwargs)
-        return '/taxhub' + url
-
-    def get_url(self, *args, **kwargs):
-            # url = super(MyHomeView, self).get_url(self,**kwargs)
-            return '/taxhub/admin'
-
 def setup_admin(app):
     # Automatic admin
     admin = Admin(
         app,
         name='Admin de Taxhub',
-        template_mode='bootstrap3',
-        index_view=MyHomeView()
+        template_mode='bootstrap3'
     )
     # admin.add_view(ModelView(BibThemes, db.session))
     admin.add_link(
-        MenuLink(name='Retour à taxhub', url='/')
+        MenuLink(name='Retour à taxhub', url='/taxhub/')
     )
     admin.add_view(AuthenticatedModelView(BibThemes, db.session, name='Themes',category='Attributs'))
     admin.add_view(AuthenticatedModelView (BibAttributs, db.session, name='Attributs',category='Attributs'))
