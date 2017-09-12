@@ -1,11 +1,11 @@
 
-from flask_admin import Admin
-from flask import current_app
+from flask_admin import Admin, AdminIndexView
+from flask import current_app, Blueprint
 
 from pypnusershub.routes import check_auth
 
 from flask_admin.contrib.sqla import ModelView
-from apptax.taxonomie.models import BibThemes, BibTypesMedia, BibAttributs, Taxref, VRegneGroupinpn
+from apptax.taxonomie.models import BibThemes, BibTypesMedia, BibAttributs, Taxref
 from apptax.log.models import TaxhubAdminLog
 
 from flask_sqlalchemy import SQLAlchemy
@@ -54,38 +54,34 @@ class NoActionsModelView(AuthenticatedModelView):
     can_edit = False
     can_delete = False
 
-from flask.ext.admin.form import Select2Widget
-from flask_admin.contrib.sqla.fields import QuerySelectField
+from flask_admin.base import expose
+class MyHomeView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/admin.html')
 
-class BibAttributsModelView(AuthenticatedModelView):
-    column_hide_backrefs = False
-    form_extra_fields = {
-        'regne': QuerySelectField(
-            label='regne',
-            query_factory=lambda: VRegneGroupinpn.query.all(),
-            widget=Select2Widget(),
-            get_label='regne'
-        ),
-        'group2_inpn': QuerySelectField(
-            label='group2_inpn',
-            query_factory=lambda: VRegneGroupinpn.query.all(),
-            widget=Select2Widget(),
-            get_label='group2_inpn'
-        )
-    }
+    def get_url(self, *args, **kwargs):
+        print('get_url')
+        url = super(CustomAdminIndexView, self).get_url(self, *args,**kwargs)
+        return '/taxhub' + url
+
+    def get_url(self, *args, **kwargs):
+            # url = super(MyHomeView, self).get_url(self,**kwargs)
+            return '/taxhub/admin'
 
 def setup_admin(app):
     # Automatic admin
     admin = Admin(
         app,
         name='Admin de Taxhub',
-        template_mode='bootstrap3'
+        template_mode='bootstrap3',
+        index_view=MyHomeView()
     )
     # admin.add_view(ModelView(BibThemes, db.session))
     admin.add_link(
         MenuLink(name='Retour à taxhub', url='/')
     )
     admin.add_view(AuthenticatedModelView(BibThemes, db.session, name='Themes',category='Attributs'))
-    admin.add_view(BibAttributsModelView(BibAttributs, db.session, name='Attributs',category='Attributs'))
+    admin.add_view(AuthenticatedModelView (BibAttributs, db.session, name='Attributs',category='Attributs'))
     admin.add_view(AuthenticatedModelView(BibTypesMedia, db.session, name='Type de média'))
     admin.add_view(NoActionsModelView(TaxhubAdminLog, db.session, name='Logs'))

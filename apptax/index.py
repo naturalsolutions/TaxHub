@@ -8,6 +8,6 @@ def index():
     return render_template('index.html')
 
 
-@routes.route("/admin")
-def admin():
-    return render_template('admin/admin.html')
+# @routes.route("/admin")
+# def admin():
+#     return render_template('admin/admin.html')
