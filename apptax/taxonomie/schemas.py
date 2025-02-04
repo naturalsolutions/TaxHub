@@ -17,6 +17,7 @@ from apptax.taxonomie.models import (
     BibTaxrefHabitats,
     BibTaxrefStatus,
     BibAttributs,
+    TaxrefTree
 )
 
 
@@ -80,6 +81,9 @@ class VBdcStatusSchema(SmartRelationshipsMixin, ma.SQLAlchemyAutoSchema):
         model = VBdcStatus
         include_fk = True
 
+class TaxrefTreeSchema(SmartRelationshipsMixin, ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = TaxrefTree
 
 class TaxrefSchema(SmartRelationshipsMixin, ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -96,3 +100,4 @@ class TaxrefSchema(SmartRelationshipsMixin, ma.SQLAlchemyAutoSchema):
     statut_presence = fields.Nested(BibTaxrefStatusSchema, many=False)
     synonymes = fields.Nested("self", many=True)
     listes = auto_field()
+    tree = fields.Nested(TaxrefTreeSchema, many=False)

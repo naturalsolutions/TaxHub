@@ -2,7 +2,7 @@ from warnings import warn
 
 from flask import abort, jsonify, Blueprint, request
 from sqlalchemy import desc, func, and_, select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, load_only
 from sqlalchemy.orm.exc import NoResultFound
 from utils_flask_sqla.response import json_resp
 from utils_flask_sqla.generic import serializeQuery
@@ -245,6 +245,33 @@ def getTaxrefDetail(id):
 
     dump_options["only"] = fields
     taxon = TaxrefSchema(**dump_options).dump(results, many=False)
+    
+    if "tree" in firstlevel_fields and "tree" in taxon and taxon["tree"]:
+        parent_ids = taxon["tree"]["path"].split(".")
+        
+        parent_fields = ['id_rang', 'cd_nom', 'cd_ref', 'lb_nom']
+        
+        parent_query = (
+            db.session.query(Taxref)
+            .filter(Taxref.cd_nom.in_(parent_ids))
+            .options(load_only(*parent_fields))
+        )
+        parents = parent_query.all()
+        
+        parents_dict = {str(p.cd_nom): p for p in parents}
+        
+        taxon["tree"]["parents"] = []
+        for cd_nom in parent_ids:
+            if cd_nom in parents_dict:
+                parent = parents_dict[cd_nom]
+                parent_data = {
+                    'id_rang': parent.id_rang,
+                    'cd_nom': parent.cd_nom,
+                    'cd_ref': parent.cd_ref,
+                    'lb_nom': parent.lb_nom,
+                }
+                taxon["tree"]["parents"].append(parent_data)
+                
 
     # Bidouille pour avoir les nom_rang, ....
     if "id_rang" in taxon:
