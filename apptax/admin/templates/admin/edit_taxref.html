@@ -19,25 +19,25 @@
           <h5 class="col-11 card-title"> <a href="{{url_for('taxons.details_view', id=model.cd_nom)}}" target="_blank">{{model.nom_complet}} {% if model.nom_vern %} - {{model.nom_vern}}  {% endif %} </a>  </h5>
           
           {% if model.cd_nom != model.cd_ref %}
-          <div class="alert alert-info" role="alert">Les attributs et les médias ne peuvent être renseignés que sur les noms valides
-            <a class="btn btn-primary" href="{{url_for('taxons.edit_view', id=model.cd_ref)}}">Voir le nom valide </a> 
+          <div class="alert alert-info" role="alert">{{ _("Les attributs et les médias ne peuvent être renseignés que sur les noms valides") }}
+            <a class="btn btn-primary" href="{{url_for('taxons.edit_view', id=model.cd_ref)}}">{{ _("Voir le nom valide") }} </a> 
           </div>
           {% endif %}
 
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             {% if model.cd_nom == model.cd_ref %}
             <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#attributes" role="tab" aria-controls="home" aria-selected="true">Attributs</a>
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#attributes" role="tab" aria-controls="home" aria-selected="true">{{ _("Attributs") }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#lists" role="tab" aria-controls="lists" aria-selected="false">Listes</a>
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#lists" role="tab" aria-controls="lists" aria-selected="false">{{ _("Listes") }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#medias" role="tab" aria-controls="medias" aria-selected="false">Médias</a>
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#medias" role="tab" aria-controls="medias" aria-selected="false">{{ _("Médias") }}</a>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#lists" role="tab" aria-controls="lists" aria-selected="true">Listes</a>
+              <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#lists" role="tab" aria-controls="lists" aria-selected="true">{{ _("Listes") }}</a>
             </li>
             {% endif %}
           </ul>

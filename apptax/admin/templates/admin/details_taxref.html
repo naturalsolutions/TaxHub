@@ -37,19 +37,19 @@
             </div>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-taxonomy" role="tab" aria-controls="nav-taxonomy" aria-selected="true">Taxonomie</a>
-                  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-lists" role="tab" aria-controls="nav-lists" aria-selected="false">Listes  </a>
-                  <a class="nav-item nav-link" id="nav-attributes-tab" data-toggle="tab" href="#nav-attributes" role="tab" aria-controls="nav-attributes" aria-selected="false">Attributs  </a>
-                  <a class="nav-item nav-link" id="nav-medias-tab" data-toggle="tab" href="#nav-medias" role="tab" aria-controls="nav-medias" aria-selected="false">Médias</a>
+                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-taxonomy" role="tab" aria-controls="nav-taxonomy" aria-selected="true">{{ _("Taxonomie") }}</a>
+                  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-lists" role="tab" aria-controls="nav-lists" aria-selected="false">{{ _("Listes") }}  </a>
+                  <a class="nav-item nav-link" id="nav-attributes-tab" data-toggle="tab" href="#nav-attributes" role="tab" aria-controls="nav-attributes" aria-selected="false">{{ _("Attributs") }}  </a>
+                  <a class="nav-item nav-link" id="nav-medias-tab" data-toggle="tab" href="#nav-medias" role="tab" aria-controls="nav-medias" aria-selected="false">{{ _("Médias") }}</a>
                 <a class="nav-item nav-link" id="nav-status-tab" data-toggle="tab" href="#nav-status" role="tab"
-                    aria-controls="nav-status" aria-selected="false">Statuts</a>
-                  <a class="nav-item nav-link" id="nav-synonymes-tab" data-toggle="tab" href="#nav-synonymes" role="tab" aria-controls="nav-synonymes" aria-selected="false">Synonymes</a>
+                    aria-controls="nav-status" aria-selected="false">{{ _("Statuts") }}</a>
+                  <a class="nav-item nav-link" id="nav-synonymes-tab" data-toggle="tab" href="#nav-synonymes" role="tab" aria-controls="nav-synonymes" aria-selected="false">{{ _("Synonymes") }}</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade mt-3" id="nav-status" role="tabpanel" aria-labelledby="nav-status-tab">
                   <a target="_blank" href="https://inpn.mnhn.fr/espece/cd_nom/{{model.cd_nom}}/tab/statut" class="btn mb-2 btn-primary ">
-                    Voir les statuts sur la fiche INPN
+                    {{ _("Voir les statuts sur la fiche INPN") }}
                   </a>
                   {% for statut in model.status %}
                     <div class="alert alert-success">
@@ -57,9 +57,9 @@
                     </div>
                     <b> {{statut.full_citation|safe}} </b>
                     <p>
-                      <b>Portée : </b> {{statut.niveau_admin}} - {{statut.cd_sig}} <br>
-                      <b>Niveau : </b> {{statut.niveau_admin}} - {{statut.label_statut}} <br>
-                      <a href="{{statut.doc_url}}"> Voir le texte</a>
+                      <b>{{ _("Portée :") }} </b> {{statut.niveau_admin}} - {{statut.cd_sig}} <br>
+                      <b>{{ _("Niveau :") }} </b> {{statut.niveau_admin}} - {{statut.label_statut}} <br>
+                      <a href="{{statut.doc_url}}"> {{ _("Voir le texte") }}</a>
                     </p>
                     {% if statut.doc_url %}
                     {% endif %}
@@ -79,23 +79,23 @@
                 <div class="tab-pane fade show active" id="nav-taxonomy" role="tabpanel" aria-labelledby="nav-taxonomy-tab">
                     <table class="table table-striped mt-3">
                         <tr>
-                            <th class="col-5"> Nom Latin</th>
+                            <th class="col-5"> {{ _("Nom Latin") }}</th>
                             <td class="col-5"> {{model.nom_complet}} </th>
                         </tr>
                         <tr>
-                            <th class="col-5"> Nom valide</th>
+                            <th class="col-5"> {{ _("Nom valide") }}</th>
                             <td class="col-5"> {{model.nom_valide}} </th>
                         </tr>
                         <tr>
-                            <th class="col-5"> Nom vernaculaire</th>
+                            <th class="col-5"> {{ _("Nom vernaculaire") }}</th>
                             <td class="col-5"> {{model.nom_vern or ''}} </th>
                         </tr>
                         <tr>
-                          <th class="col-5"> Auteur</th>
+                          <th class="col-5"> {{ _("Auteur") }}</th>
                         <td class="col-5"> {{model.lb_auteur or ''}} </th>
                       </tr>
                         <tr>
-                            <th class="col-5"> Nom vernaculaire anglais</th>
+                            <th class="col-5"> {{ _("Nom vernaculaire anglais") }}</th>
                             <td class="col-5"> {{model.nom_vern_eng or ''}} </th>
                         </tr>
                         <tr>
@@ -108,20 +108,20 @@
                         </tr>
                         {% if model.cd_taxsup %}
                         <tr>
-                          <th class="col-5"> Taxon superieur </th>
+                          <th class="col-5"> {{ _("Taxon superieur") }} </th>
                           <td class="col-5">  <a href="{{url_for('taxons.details_view', id=model.cd_taxsup)}}"> {{model.cd_taxsup}}</a>  </th>
                         </tr>
                         {% endif %}
                         <tr>
-                            <th class="col-5"> Group 1 INPN </th>
+                            <th class="col-5"> {{ _("Group 1 INPN") }} </th>
                             <td class="col-5"> {{model.group1_inpn or ''}} </th>
                         </tr>
                         <tr>
-                            <th class="col-5"> Group 2 INPN </th>
+                            <th class="col-5"> {{ _("Group 2 INPN") }} </th>
                             <td class="col-5"> {{model.group2_inpn or ''}} </th>
                         </tr>
                         <tr>
-                            <th class="col-5"> Rang </th>
+                            <th class="col-5"> {{ _("Rang") }} </th>
                             <td class="col-5"> {{model.rang.nom_rang or ''}} </th>
                         </tr>
                     </table>
@@ -164,9 +164,9 @@
                     <table class="table table-striped">
                         <thead>
                             <th> #</th>
-                            <th> titre</th>
+                            <th> {{ _("titre") }}</th>
                             <th> Description</th>
-                            <th> Auteur</th>
+                            <th> {{ _("Auteur") }}</th>
                             <th> Type</th>
                         </thead>
                         {% for media in medias %}
@@ -179,7 +179,7 @@
                                 {% elif media.types.nom_type_media in ("Audio")%}
                                     <audio controls src='{{ media.media_url }}'>
                                 {% else%}
-                                    <a  target='_blank' href='{{  media.media_url  }}'>Lien média</a>
+                                    <a  target='_blank' href='{{  media.media_url  }}'>{{ _("Lien média") }}</a>
                                 {% endif %}
                             </td>
                             <td> {{media.titre or ''}} </td>

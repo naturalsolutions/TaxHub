@@ -3,6 +3,7 @@ import logging
 from pathlib import Path
 
 from flask import request, json, url_for, redirect, flash, g, current_app
+from flask_babel import lazy_gettext as _l
 from flask_admin.model.template import macro
 from jinja2.utils import markupsafe
 
@@ -232,11 +233,11 @@ class BibListesView(FlaskAdminProtectedMixin, RegneAndGroupFormMixin, ModelView)
                 liste.noms = []
             db.session.add(liste)
             db.session.commit()
-            flash("Liste purgée de ses noms")
+            flash(_l("Liste purgée de ses noms"))
             return redirect(self.get_url(".index_view"))
         except Exception as ex:
             log.error(str(ex))
-            flash("Erreur, liste non purgée", "error")
+            flash(_l("Erreur, liste non purgée"), "error")
             return redirect(self.get_url(".index_view"))
 
     @expose("/import_cd_nom/", methods=("GET", "POST"))
@@ -274,13 +275,13 @@ class BibListesView(FlaskAdminProtectedMixin, RegneAndGroupFormMixin, ModelView)
 
 
 class InlineMediaForm(InlineFormAdmin):
-    form_label = "Média"
+    form_label = _l("Média")
     form_extra_fields = {
         "chemin": FileUploadFieldWithoutDelete(
-            label="Téléverser un fichier",
+            label=_l("Téléverser un fichier"),
             namegen=taxref_media_file_name,
             base_path=get_media_folder().absolute(),
-            description="Téléverser le média que vous souhaitez associer au taxon",
+            description=_l("Téléverser le média que vous souhaitez associer au taxon"),
         )
     }
 
@@ -298,12 +299,12 @@ class InlineMediaForm(InlineFormAdmin):
     )
 
     column_descriptions = {
-        "url": "Ou renseignez son URL si le média est déjà disponible en ligne",
+        "url": _l("Ou renseignez son URL si le média est déjà disponible en ligne"),
     }
 
     column_labels = {
         "url": "URL",
-        "is_public": "Média public ?",
+        "is_public": _l("Média public ?"),
         "types": "Type",
         "desc_media": "Description",
     }
@@ -397,26 +398,27 @@ class TaxrefView(
     column_filters = [
         FilterEqual(Taxref.cd_nom, name="cd_nom"),
         FilterEqual(Taxref.cd_ref, name="cd_ref"),
-        TaxrefDistinctFilter(column=Taxref.regne, name="Règne"),
+        TaxrefDistinctFilter(column=Taxref.regne, name=_l("Règne")),
         TaxrefDistinctFilter(column=Taxref.group2_inpn, name="Group2 INPN"),
-        TaxrefDistinctFilter(column=Taxref.classe, name="Classe"),
-        TaxrefDistinctFilter(column=Taxref.famille, name="Famille"),
-        TaxrefDistinctFilter(column=Taxref.ordre, name="Ordre"),
+        TaxrefDistinctFilter(column=Taxref.classe, name=_l("Classe")),
+        TaxrefDistinctFilter(column=Taxref.famille, name=_l("Famille")),
+        TaxrefDistinctFilter(column=Taxref.ordre, name=_l("Ordre")),
         FilterBiblist(
-            name="Est dans la liste",
+            name=_l("Est dans la liste"),
         ),
         FilterTaxrefAttr(
-            name="A l'attribut",
+            name=_l("A l'attribut"),
         ),
         FilterIsValidName(
-            name="Nom valide / synonyme", options=[(1, "Nom valide"), (0, "Synonyme")]
+            name=_l("Nom valide / synonyme"), options=[(1, _l("Nom valide")), (0, _l("Synonyme"))]
         ),
         FilterMedia(
-            name="Média", options=[(1, "Possède un média"), (0, "Ne possède pas de média")]
+            name=_l("Média"),
+            options=[(1, _l("Possède un média")), (0, _l("Ne possède pas de média"))],
         ),
         FilterAttributes(
-            name="Attributs",
-            options=[(1, "Possède un attribut"), (0, "Ne possède pas d'attribut")],
+            name=_l("Attributs"),
+            options=[(1, _l("Possède un attribut")), (0, _l("Ne possède pas d'attribut"))],
         ),
     ]
     column_formatters = {c: macro("render_nom_ref") for c in column_list}
@@ -610,7 +612,7 @@ class TMediasView(FlaskAdminProtectedMixin, ModelView):
     column_exclude_list = ("url",)
     form_extra_fields = {
         "chemin": FileUploadFieldWithoutDelete(
-            label="Téléverser un fichier",
+            label=_l("Téléverser un fichier"),
             base_path=get_media_folder().absolute(),
             namegen=taxref_media_file_name,
         )
@@ -710,18 +712,22 @@ class BibAttributsView(FlaskAdminProtectedMixin, RegneAndGroupFormMixin, ModelVi
     )
     column_labels = {
         "desc_attribut": "Description",
-        "regne": "Règne",
+        "regne": _l("Règne"),
         "group2_inpn": "Group2 INPN",
-        "theme": "Thème",
-        "liste_valeur_attribut": "Valeurs disponibles",
+        "theme": _l("Thème"),
+        "liste_valeur_attribut": _l("Valeurs disponibles"),
     }
 
     column_descriptions = {
-        "nom_attribut": """Nom de l'attribut dans la BDD""",
-        "label_attribut": """Label de l'attribut affiché dans les formulaires""",
-        "regne": """Limiter le renseignement de cet attribut aux taxons d'un règne""",
-        "group2_inpn": """Limiter le renseignement de cet attribut aux taxons d'un groupe 2 INPN""",
-        "type_attribut": "Definit le type des valeurs enregistrés (pour les widget 'select', 'multiselect' et 'radio')",
+        "nom_attribut": _l("""Nom de l'attribut dans la BDD"""),
+        "label_attribut": _l("""Label de l'attribut affiché dans les formulaires"""),
+        "regne": _l("""Limiter le renseignement de cet attribut aux taxons d'un règne"""),
+        "group2_inpn": _l(
+            """Limiter le renseignement de cet attribut aux taxons d'un groupe 2 INPN"""
+        ),
+        "type_attribut": _l(
+            "Definit le type des valeurs enregistrés (pour les widget 'select', 'multiselect' et 'radio')"
+        ),
         "liste_valeur_attribut": """Valeur disponible pour les widgets "select", "multiselect" et "radio". Doit suivre le format suivant : {"values":["valeur1", "valeur2", "valeur3"]}""",
     }
 

@@ -6,7 +6,7 @@
 
   
   <div id="login-error" class="alert alert-danger" role="alert" style="display: none;">
-    Identifiant ou mot de passe invalide
+    {{ _("Identifiant ou mot de passe invalide") }}
   </div>
   
   <div class="col-4 offset-4 mt-3">  
@@ -15,7 +15,7 @@
         <input id="id-app" type="hidden" value="{{ IP_APP }}"> </input>
         <input id="return-url" type="hidden" value="{{ RETURN_URL }}"> </input>
         {{ lib.render_form_fields(form, form_opts=form_opts) }}
-        <button  type="button" class="btn btn-primary" id="login-submit">Se Connecter</button>
+        <button  type="button" class="btn btn-primary" id="login-submit">{{ _("Se Connecter") }}</button>
     {% endblock %}
   </div>
 {% endblock %}
